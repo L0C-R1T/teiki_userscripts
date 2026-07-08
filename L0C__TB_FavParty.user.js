@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        L0C__TB_FavParty
-// @version     2026-04-30
+// @version     2026-07-08
 // @description Toy Boxで連れ出しのお気に入りとかできたらいいな～なやつ
 // @author      L0C_R1T
 // @match       https://soraniwa.428.st/toybox/*
