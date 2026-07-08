@@ -49,7 +49,7 @@
       $('#l0c_ptex').on("click",()=>{
         let partyExData = JSON.stringify(parties);
         const link = document.createElement('a');
-        link.download = 'StbPartyData.json'; // ダウンロードファイル名称
+        link.download = `TB_PartyData_${Date.now().toISOString().split('T')[0]}.json`; // ダウンロードファイル名称
         link.href = URL.createObjectURL(new Blob([partyExData],{type:"application/json"})); // オブジェクト URL を生成
         link.click(); // クリックイベントを発生させる
         URL.revokeObjectURL(link.href); // オブジェクト URL を解放」
