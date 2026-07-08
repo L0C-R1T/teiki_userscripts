@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        L0C__TB_FavParty
-// @version     2026-07-08
+// @version     2026-07-08.1
 // @description Toy Boxで連れ出しのお気に入りとかできたらいいな～なやつ
 // @author      L0C_R1T
 // @match       https://soraniwa.428.st/toybox/*
@@ -20,7 +20,7 @@
   $(window).load(function(){
     let params = new URL(document.location).searchParams;
     let pgMode = params.get("mode");
-    if (pgMode === "action") {
+    if (pgMode === "action" || $('#mainform')) {
       console.log("[L0C__Tb_FavParty] : 有効");
       l0cActionPage();
     } else {
@@ -31,7 +31,8 @@
   function l0cActionPage() {
     $('#memberreset').before('<input type="button" id="l0c_ptrg" class="action-submit" value="編成を登録">　');
     $('#fullmember').before('<div id="l0c_tbFavParty"><select id="l0c_ptli" name="l0c_ptli"><option value="-1"> - - - 登録パーティから選択 - - - </option></select> <input type="button" id="l0c_ptset" class="action-submit" value="セット">　<input type="button" id="l0c_ptdel" value="削除"></div><br><br>パーティ情報を <input type="button" id="l0c_ptin" class="l0c_btn" value="ファイルから読込"><input type="file" style="display:none;" id="l0c_ptfile"> <input type="button" id="l0c_ptex" class="l0c_btn" value="ファイルに保存"><br><br><br>');
-    $('#l0c_ptdel').css({color:"#cc5577", borderColor:"currentColor"});
+    $('#l0c_ptdel').css({color:"#cc5577", borderColor:"#cc5577"});
+    $('#l0c_ptdel:hover').css({color:"#fff",backgroundColor:"#cc5577"});
     $("#l0c_ptset").on("click", setParty);
 
     if (parties) {
@@ -49,7 +50,7 @@
       $('#l0c_ptex').on("click",()=>{
         let partyExData = JSON.stringify(parties);
         const link = document.createElement('a');
-        link.download = `TB_PartyData_${Date.now().toISOString().split('T')[0]}.json`; // ダウンロードファイル名称
+        link.download = 'StbPartyData.json'; // ダウンロードファイル名称
         link.href = URL.createObjectURL(new Blob([partyExData],{type:"application/json"})); // オブジェクト URL を生成
         link.click(); // クリックイベントを発生させる
         URL.revokeObjectURL(link.href); // オブジェクト URL を解放」
@@ -58,7 +59,7 @@
   }
 
   function onChange(event){
-    var reader=new FileReader();
+    var reader = new FileReader();
     reader.onload = onReaderLoad;
     reader.readAsText(event.target.files[0]);
   }
@@ -120,8 +121,8 @@
       let uniqueParties = parties.flat(Infinity);
       GM_setValue(LsDataName, JSON.stringify(uniqueParties));
       if (localStorage.hasOwnProperty(LsDataName)) {
-        localStorage.removeItem(LsDataName);
-        localStorage.setItem(LsDataName,JSON.stringify(uniqueParties));
+        GM_deleteValue(LsDataName);
+        GM_setValue(LsDataName,JSON.stringify(uniqueParties));
       }
       parties = uniqueParties;
       listPartyData();
@@ -151,6 +152,8 @@
     if(window.confirm(`編成「${$('#l0c_ptli > option:selected').text()}」を削除してもよろしいですか?`)){
       parties.splice(id,1);
       $(`#l0c_ptli > option[value="${id}"]`).remove();
+      let uniqueParties = parties.flat(Infinity);
+      GM_setValue(LsDataName,JSON.stringify(uniqueParties));
     }else{
       alert("削除が取り消されました。");
       return false;
