@@ -5,6 +5,8 @@
 // @author      L0C_R1T
 // @match       https://soraniwa.428.st/toybox/*
 // @icon        https://www.google.com/s2/favicons?sz=64&domain=https://soraniwa.428.st/toybox/
+// @updateURL   https://github.com/L0C-R1T/teiki_userscripts/raw/refs/heads/main/L0C__TB_FavParty.user.js
+// @downloadURL https://github.com/L0C-R1T/teiki_userscripts/raw/refs/heads/main/L0C__TB_FavParty.user.js
 // @grant       GM_setValue
 // @grant       GM_getValue
 // @grant       GM_deleteValue
